@@ -81,12 +81,34 @@ public class OllamaService {
     private String generateWithGemini(String prompt) {
 
         Map<String, Object> request = Map.of(
+                "systemInstruction", Map.of(
+                        "parts", List.of(
+                                Map.of(
+                                        "text",
+                                        """
+                                        You are the AI engine for RecallAI.
+
+                                        Follow the user's task exactly.
+                                        Do not greet the user.
+                                        Do not introduce yourself.
+                                        Do not say "Hello", "I am RecallAI", or describe yourself.
+                                        Do not replace the requested task with a generic response.
+                                        Use the supplied study material when the prompt contains study material.
+                                        Return only the requested result.
+                                        """
+                                )
+                        )
+                ),
                 "contents", List.of(
                         Map.of(
+                                "role", "user",
                                 "parts", List.of(
                                         Map.of("text", prompt)
                                 )
                         )
+                ),
+                "generationConfig", Map.of(
+                        "temperature", 0.2
                 )
         );
 
